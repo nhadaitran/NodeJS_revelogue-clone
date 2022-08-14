@@ -18,4 +18,4 @@ app.use(cors);
 
 initWebRouters(app);
 
-app.listen(config.port,console.log('Server has started on http://localhost:%s', config.port));
+app.listen(config.port);
