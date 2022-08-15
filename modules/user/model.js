@@ -24,6 +24,10 @@ const userSchema = mongoose.Schema({
         type: String,
         default: 'staff'
     },
+    sex: {
+        type: Number,
+        required: true
+    },
     created_at: {
         type: Date,
         default: Date.now()

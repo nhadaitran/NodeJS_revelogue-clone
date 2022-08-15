@@ -11,11 +11,13 @@ const articleSchema = mongoose.Schema({
         require: true
     },
     category: {
-        type: String,
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'category',
         require: true
     },
     writer: {
-        type: String,
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'user',
         require: true
     },
     view: {
