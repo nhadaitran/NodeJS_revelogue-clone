@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
 
-const config = require('./config');
-const db = require('./config/database');
+const config = require('./configs');
+const db = require('./configs/database');
 const initWebRouters = require('./routes')
 
 const cors = (req,res,next) => {

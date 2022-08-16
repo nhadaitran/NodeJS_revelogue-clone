@@ -10,6 +10,14 @@ const articleSchema = mongoose.Schema({
         type: String,
         require: true
     },
+    image_url: {
+        type: String,
+        require: true
+    },
+    image_name: {
+        type: String,
+        require: true
+    },
     category: {
         type: mongoose.SchemaTypes.ObjectId,
         ref: 'category',
@@ -35,9 +43,19 @@ const articleSchema = mongoose.Schema({
     created_at: {
         type: Date,
         default: Date.now()
+    },
+    updated_at: {
+        type: Date,
+        default: Date.now()
     }
 });
 
-const articleModel = mongoose.model('article',articleSchema);
+articleSchema.pre('updateOne', function (next) {
+    let data = this.getUpdate();
+    data.updated_at = Date.now();
+    next();
+})
+
+const articleModel = mongoose.model('article', articleSchema);
 
 module.exports = articleModel;

@@ -1,9 +1,9 @@
 const router = require('express').Router();
 const controller = require('./controller')
-const multer = require('multer');
-var upload = multer();
+const fileUploader = require('../../configs/cloudinary.config');
 
-router.post('/login', upload.none(), controller.login);
-router.post('/register', upload.none(), controller.register);
+router.post('/login', fileUploader.none(), controller.login);
+router.post('/register', fileUploader.none(), controller.register);
+router.put('/:id', fileUploader.single('file'), controller.update);
 
 module.exports = router;

@@ -15,6 +15,14 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    image_url: {
+        type: String,
+        default: null
+    },
+    image_name: {
+        type: String,
+        default: null
+    },
     email: {
         type: String,
         required: true,

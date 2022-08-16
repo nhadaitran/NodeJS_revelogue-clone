@@ -4,7 +4,7 @@ const multer = require('multer');
 var upload = multer();
 
 router.get('/',controller.getAll);
-router.get('/:id',controller.getOne);
+router.get('/:slug',controller.getOne);
 router.get('/parent',controller.getParent);
 router.post('/',upload.none(),controller.insert);
 router.put('/:id',upload.none(),controller.update);

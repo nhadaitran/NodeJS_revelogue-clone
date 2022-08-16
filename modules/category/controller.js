@@ -19,7 +19,7 @@ module.exports = {
     },
     getOne: async (req, res) => {
         try {
-            const data = await model.findById(req.params.id)
+            const data = await model.findOne({slug:req.params.slug})
             res.status(200).send(data);
         } catch (err) {
             res.status(500).send(null);

@@ -1,6 +1,6 @@
 const model = require('./model');
 const jwt = require('jsonwebtoken');
-const config = require('../../config');
+const config = require('../../configs');
 
 module.exports = {
     login: (req, res) => {
@@ -42,6 +42,23 @@ module.exports = {
                 msg = "Email already in use. Please try again"
             }
             res.status(500).send({ error: msg });
+        }
+    },
+    update: async (req, res) => {
+        try {
+            const data = await model.findById(req.params.id);
+            if (req.file) {
+                if (data.image_name) {
+                    let filename = data.image_name;
+                    await cloudinary.uploader.destroy(filename);
+                }
+                req.body.image_url = req.file.path;
+                req.body.image_name = req.file.filename;
+            }
+            await data.updateOne(req.body);
+            res.status(200).send(true);
+        } catch (err) {
+            res.status(500).send(false);
         }
     }
 }

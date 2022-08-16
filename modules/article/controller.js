@@ -1,3 +1,4 @@
+const cloudinary = require('cloudinary').v2;
 const model = require('./model');
 
 module.exports = {
@@ -11,23 +12,28 @@ module.exports = {
     },
     getOne: async (req, res) => {
         try {
-            const data = await model.findById(req.params.id)
+            const data = await model.findOne({slug:req.params.slug})
             res.status(200).send(data);
         } catch (err) {
             res.status(500).send(null);
         }
     },
-    insert: async (req, res) => {
+    insert: async (req, res, next) => {
+        if(!req.file){
+            res.status(500).send({error: "No image uploaded!"});
+        }
         let newArticle = new model({
             title: req.body.title,
             slug: req.body.slug,
             content: req.body.content,
-            status: req.body.status
+            status: req.body.status,
+            image_url: req.file.path,
+            image_name: req.file.filename
         })
         newArticle.writer = req.body.writer;
         newArticle.category = req.body.category;
         try {
-            const result = await newArticle.save()
+            const result = await newArticle.save();
             res.status(200).send({ article: result });
         } catch (err) {
             res.status(500).send(err);
@@ -35,7 +41,14 @@ module.exports = {
     },
     update: async (req, res) => {
         try {
-            await model.findById(req.params.id).updateOne(req.body)
+            const data = await model.findById(req.params.id);
+            if(req.file){
+                let filename = data.image_name;
+                await cloudinary.uploader.destroy(filename);
+                req.body.image_url = req.file.path;
+                req.body.image_name = req.file.filename;    
+            }
+            await data.updateOne(req.body);
             res.status(200).send(true);
         } catch (err) {
             res.status(500).send(false);
@@ -43,7 +56,11 @@ module.exports = {
     },
     delete: async (req, res) => {
         try {
-            await model.findById(req.params.id).deleteOne()
+
+            const data = await model.findById(req.params.id);
+            let filename = data.image_name;
+            await data.deleteOne();
+            await cloudinary.uploader.destroy(filename);
             res.status(200).send(true);
         } catch (err) {
             res.status(500).send(false);
