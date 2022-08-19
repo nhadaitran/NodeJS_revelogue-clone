@@ -1,25 +1,41 @@
 const model = require('./model');
-const jwt = require('jsonwebtoken');
-const config = require('../../configs');
+const jwt = require('../jwt_service')
+const redis = require('../../connections/init.redis');
 
 module.exports = {
     login: (req, res) => {
         model.findOne({ email: req.body.email }, (err, user) => {
             if (err) res.status(500).send({ msg: err.message });
             if (user) {
-                user.comparePassword(req.body.password, (err, isMatch) => {
+                user.comparePassword(req.body.password, async (err, isMatch) => {
                     if (err) res.status(500).send({ msg: err.message });
                     if (isMatch) {
-                        let token = jwt.sign({ id: user._id }, config.secret, { expiresIn: 86400 })
-                        res.status(200).send({ token: token });
+                        let token = await jwt.signToken(user._id, user.role)
+                        await jwt.signRefreshToken(user._id, user.role)
+                        res.cookie('accessToken', token, {
+                            httpOnly: true,
+                            secure: false,
+                            sameSite: 'strict'
+                        })
+                        res.status(200).send({ auth: true });
                     } else {
-                        res.status(500).send({ msg: 'Password incorrect' });
+                        res.status(403).send({ msg: 'Password incorrect' });
                     }
                 });
             } else {
-                res.status(500).send({ msg: 'User not found' })
+                res.status(404).send()
             }
         });
+    },
+    logout: async (req, res) => {
+        try {
+            if(!req.cookies.accessToken) res.status(401).send();
+            await jwt.deleteRefreshToken(req.cookies.accessToken)
+            res.clearCookie('accessToken')
+            res.status(200).send();
+        } catch (err) {
+            res.status(500).send();
+        }
     },
     register: async (req, res) => {
         let newUser = new model({
@@ -32,8 +48,14 @@ module.exports = {
         })
         try {
             const user = await newUser.save()
-            let token = jwt.sign({ id: user._id }, config.secret, { expiresIn: 86400 })
-            res.status(200).send({ token: token });
+            let token = await jwt.signToken(user._id, user.role)
+            await jwt.signRefreshToken(user._id, user.role)
+            res.cookie('accessToken', token, {
+                httpOnly: true,
+                secure: false,
+                sameSite: 'strict'
+            })
+            res.status(200).send({ auth: true });
         } catch (err) {
             let msg = err.message;
             if ("username" in err.keyValue) {
@@ -42,6 +64,14 @@ module.exports = {
                 msg = "Email already in use. Please try again"
             }
             res.status(500).send({ error: msg });
+        }
+    },
+    getAll: async (req, res) => {
+        try {
+            const data = await model.find({}).select('fullname image_url image_name email sex created_at')
+            res.status(200).send(data);
+        } catch (err) {
+            res.status(500).send(null);
         }
     },
     update: async (req, res) => {
