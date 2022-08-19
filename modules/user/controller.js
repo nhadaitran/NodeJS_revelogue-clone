@@ -1,6 +1,6 @@
 const model = require('./model');
 const jwt = require('../jwt_service')
-const redis = require('../../connections/init.redis');
+const redis = require('../../configs/init.redis');
 
 module.exports = {
     login: (req, res) => {

@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const config = require('../configs');
-const client = require('../connections/init.redis')
+const client = require('../configs/init.redis')
 const middlewareController = {
     signToken: async (id, role) => {
         return new Promise((resolve, reject) => {
