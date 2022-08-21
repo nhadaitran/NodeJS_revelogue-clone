@@ -1,9 +1,13 @@
 const model = require('./model');
 const jwt = require('../jwt_service')
-const redis = require('../../configs/init.redis');
+const validate = require('../../helpers/validation')
 
 module.exports = {
     login: (req, res) => {
+        const { error } = validate.loginValidate(req.body)
+        if (error) {
+            res.status(500).send({ msg: error.details[0].message })
+        }
         model.findOne({ email: req.body.email }, (err, user) => {
             if (err) res.status(500).send({ msg: err.message });
             if (user) {
@@ -29,7 +33,7 @@ module.exports = {
     },
     logout: async (req, res) => {
         try {
-            if(!req.cookies.accessToken) res.status(401).send();
+            if (!req.cookies.accessToken) res.status(401).send();
             await jwt.deleteRefreshToken(req.cookies.accessToken)
             res.clearCookie('accessToken')
             res.status(200).send();
@@ -38,6 +42,10 @@ module.exports = {
         }
     },
     register: async (req, res) => {
+        const { error } = validate.registerValidate(req.body)
+        if (error) {
+            res.status(500).send({ msg: error.details[0].message })
+        }
         let newUser = new model({
             fullname: req.body.fullname,
             username: req.body.username,
@@ -58,12 +66,15 @@ module.exports = {
             res.status(200).send({ auth: true });
         } catch (err) {
             let msg = err.message;
+            let status = 500;
             if ("username" in err.keyValue) {
+                status = 409
                 msg = "Username already in use. Please try again"
             } else if ("email" in err.keyValue) {
+                status = 409
                 msg = "Email already in use. Please try again"
             }
-            res.status(500).send({ error: msg });
+            res.status(status).send({ error: msg });
         }
     },
     getAll: async (req, res) => {

@@ -97,7 +97,7 @@ const middlewareController = {
     verifyStaff: async (req, res, next) => {
         await middlewareController.verifyToken(req, res, () => {
             try {
-                if (req.payload.role == 'staff') {
+                if (req.payload.role == 'staff' || req.payload.role == 'admin') {
                     next();
                 } else {
                     res.status(403).send(false);

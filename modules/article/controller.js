@@ -2,7 +2,7 @@ const cloudinary = require('cloudinary').v2;
 const model = require('./model');
 
 module.exports = {
-    getAll: async (req,res) => {
+    getAll: async (req, res) => {
         try {
             const data = await model.find().populate('writer')
             res.status(200).send(data);
@@ -10,17 +10,33 @@ module.exports = {
             res.status(500).send(null);
         }
     },
+    getByWriter: async (req, res) => {
+        try {
+            const data = await model.find({writer: req.params.id}).populate('writer')
+            res.status(200).send(data);
+        } catch (err) {
+            res.status(500).send(null);
+        }
+    },
+    getByCategory: async (req, res) => {
+        try {
+            const data = await model.find({category: req.params.id}).populate('category')
+            res.status(200).send(data);
+        } catch (err) {
+            res.status(500).send(null);
+        }
+    },
     getOne: async (req, res) => {
         try {
-            const data = await model.findOne({slug:req.params.slug})
+            const data = await model.findOne({ slug: req.params.slug })
             res.status(200).send(data);
         } catch (err) {
             res.status(500).send(null);
         }
     },
     insert: async (req, res, next) => {
-        if(!req.file){
-            res.status(500).send({error: "No image uploaded!"});
+        if (!req.file) {
+            res.status(500).send({ error: "No image uploaded!" });
         }
         let newArticle = new model({
             title: req.body.title,
@@ -42,11 +58,11 @@ module.exports = {
     update: async (req, res) => {
         try {
             const data = await model.findById(req.params.id);
-            if(req.file){
+            if (req.file) {
                 let filename = data.image_name;
                 await cloudinary.uploader.destroy(filename);
                 req.body.image_url = req.file.path;
-                req.body.image_name = req.file.filename;    
+                req.body.image_name = req.file.filename;
             }
             await data.updateOne(req.body);
             res.status(200).send(true);
