@@ -21,7 +21,8 @@ module.exports = {
                             secure: false,
                             sameSite: 'strict'
                         })
-                        res.status(200).send({ auth: true });
+                        const { password,...info } = {...user._doc}
+                        res.status(200).send({ auth: info });
                     } else {
                         res.status(403).send({ msg: 'Password incorrect' });
                     }
