@@ -1,10 +1,8 @@
 const redis = require('ioredis')
 const config = require('./index')
 const client = redis.createClient({
-    socket: {
-        port: config.redis_port,
-        host: config.redis_host
-    },
+    port: config.redis_port,
+    host: config.redis_host,    
     password: config.redis_pass
 });
 
