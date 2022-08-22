@@ -8,21 +8,21 @@ const client = redis.createClient({
     password: config.redis_pass
 });
 
-//Redis Flow
-client.on('error', function (err) {
-    console.error(err);
-})
+// //Redis Flow
+// client.on('error', function (err) {
+//     console.error(err);
+// })
 
-client.on('connect', function (err) {
-    console.log('Redis Connected');
-})
+// client.on('connect', function (err) {
+//     console.log('Redis Connected');
+// })
 
-client.on('ready', function (err) {
-    console.log('Redis Ready');
-})
+// client.on('ready', function (err) {
+//     console.log('Redis Ready');
+// })
 
-client.ping((err, pong) => {
-    console.log(pong)
-})
+// client.ping((err, pong) => {
+//     console.log(pong)
+// })
 
 module.exports = client;
