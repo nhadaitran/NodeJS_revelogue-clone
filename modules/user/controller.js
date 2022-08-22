@@ -21,14 +21,14 @@ module.exports = {
                             secure: false,
                             sameSite: 'strict'
                         })
-                        const { password,...info } = {...user._doc}
+                        const { password, ...info } = { ...user._doc }
                         res.status(200).send({ auth: info });
                     } else {
                         res.status(403).send({ msg: 'Password incorrect' });
                     }
                 });
             } else {
-                res.status(404).send()
+                res.status(403).send({ msg: 'User not exists' })
             }
         });
     },
@@ -64,7 +64,8 @@ module.exports = {
                 secure: false,
                 sameSite: 'strict'
             })
-            res.status(200).send({ auth: true });
+            const { password, ...info } = { ...user._doc }
+            res.status(200).send({ auth: info });   
         } catch (err) {
             let msg = err.message;
             let status = 500;
