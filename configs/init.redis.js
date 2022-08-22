@@ -1,18 +1,23 @@
 const redis = require('ioredis')
+const config = require('./index')
 const client = redis.createClient({
-    port: 19768,
-    host: 'redis-19768.c295.ap-southeast-1-1.ec2.cloud.redislabs.com'
-})
+    socket: {
+        port: config.redis_port,
+        host: config.redis_host
+    },
+    password: config.redis_pass
+});
+
 //Redis Flow
-client.on('error',function(err) {
+client.on('error', function (err) {
     console.error(err);
 })
 
-client.on('connect',function(err) {
+client.on('connect', function (err) {
     console.log('Redis Connected');
 })
 
-client.on('ready',function(err) {
+client.on('ready', function (err) {
     console.log('Redis Ready');
 })
 
