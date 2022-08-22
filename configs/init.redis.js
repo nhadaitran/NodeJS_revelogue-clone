@@ -1,7 +1,7 @@
 const redis = require('ioredis')
 const client = redis.createClient({
-    port: 6379,
-    host: '127.0.0.1'
+    port: 19768,
+    host: 'redis-19768.c295.ap-southeast-1-1.ec2.cloud.redislabs.com'
 })
 //Redis Flow
 client.on('error',function(err) {
