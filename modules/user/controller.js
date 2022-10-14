@@ -20,6 +20,7 @@ module.exports = {
                             httpOnly: true,
                             secure: false,
                             // sameSite: 'strict'
+                            sameSite: none
                         })
                         const { password, ...info } = { ...user._doc }
                         res.status(200).send({ auth: info });
