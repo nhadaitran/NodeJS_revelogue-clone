@@ -19,7 +19,7 @@ module.exports = {
                         res.cookie('accessToken', token, {
                             httpOnly: true,
                             secure: false,
-                            sameSite: 'strict'
+                            // sameSite: 'strict'
                         })
                         const { password, ...info } = { ...user._doc }
                         res.status(200).send({ auth: info });
