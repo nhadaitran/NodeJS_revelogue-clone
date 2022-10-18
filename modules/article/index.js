@@ -5,7 +5,7 @@ const fileUploader = require('../../configs/cloudinary.config');
 
 router.get('/', controller.getAll);
 router.get('/:id', controller.getByWriter);
-router.get('/:id', controller.getByCategory);
+router.get('/category/:id', controller.getByCategory);
 router.get('/:slug', controller.getOne);
 
 router.post('/', jwt.verifyStaff, fileUploader.single('file'), controller.insert);
