@@ -28,7 +28,7 @@ module.exports = {
     },
     getOne: async (req, res) => {
         try {
-            const data = await model.findOne({ slug: req.params.slug })
+            const data = await model.findOne({ slug: req.params.slug }).populate('category writer')
             res.status(200).send(data);
         } catch (err) {
             res.status(500).send(null);
