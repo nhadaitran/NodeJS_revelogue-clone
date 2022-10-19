@@ -4,7 +4,7 @@ const jwt = require('../jwt_service');
 const fileUploader = require('../../configs/cloudinary.config');
 
 router.get('/', controller.getAll);
-router.get('/:id', controller.getByWriter);
+router.get('/writer/:id', controller.getByWriter);
 router.get('/category/:id', controller.getByCategory);
 router.get('/:slug', controller.getOne);
 
