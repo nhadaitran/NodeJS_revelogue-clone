@@ -12,7 +12,7 @@ module.exports = {
     },
     getByWriter: async (req, res) => {
         try {
-            const data = await model.find({writer: req.params.id}).populate('writer')
+            const data = await model.find({ writer: req.params.id }).populate('writer')
             res.status(200).send(data);
         } catch (err) {
             res.status(500).send(null);
@@ -20,8 +20,11 @@ module.exports = {
     },
     getByCategory: async (req, res) => {
         try {
-            const data = await model.find({category: req.params.id}).populate('category')
-            res.status(200).send(data);
+            const data = await model.find({ category: req.params.id }).populate('category')
+            var slug = data[0].category.slug
+            var articles = {}
+            articles[slug] = data
+            res.status(200).send(articles);
         } catch (err) {
             res.status(500).send(null);
         }
