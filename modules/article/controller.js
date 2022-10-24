@@ -1,5 +1,6 @@
 const cloudinary = require('cloudinary').v2;
 const model = require('./model');
+const modelCategory = require('../category/model');
 
 module.exports = {
     getAll: async (req, res) => {
@@ -31,9 +32,11 @@ module.exports = {
     },
     getByCategorySlug: async (req, res) => {
         try {
-            const data = await model.find({}).populate('category', {slug: req.params.slug })
+            var cat = await modelCategory.findOne({ slug: req.params.slug })
+            const data = await model.find({ category: cat._id.toString() }).populate('category')
+            var slug = data[0].category.slug
             var articles = {}
-            articles[req.params.slug] = data
+            articles[slug] = data
             res.status(200).send(articles);
         } catch (err) {
             res.status(500).send(null);
