@@ -29,6 +29,16 @@ module.exports = {
             res.status(500).send(null);
         }
     },
+    getByCategorySlug: async (req, res) => {
+        try {
+            const data = await model.find({}).populate('category', {slug: req.params.slug })
+            var articles = {}
+            articles[req.params.slug] = data
+            res.status(200).send(articles);
+        } catch (err) {
+            res.status(500).send(null);
+        }
+    },
     getOne: async (req, res) => {
         try {
             const data = await model.findOne({ slug: req.params.slug }).populate('category writer')
