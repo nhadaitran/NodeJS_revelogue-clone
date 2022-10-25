@@ -20,7 +20,7 @@ module.exports = {
                             httpOnly: true,
                             // secure: false,
                             secure: true,
-                            samesite:'None',
+                            samesite: none,
                             // samesite:'Strict',
                             // sameSite: 'lax',
                         })
@@ -68,7 +68,7 @@ module.exports = {
                 sameSite: 'strict'
             })
             const { password, ...info } = { ...user._doc }
-            res.status(200).send({ auth: info });   
+            res.status(200).send({ auth: info });
         } catch (err) {
             let msg = err.message;
             let status = 500;
