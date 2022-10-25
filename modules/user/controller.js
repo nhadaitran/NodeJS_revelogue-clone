@@ -13,14 +13,14 @@ module.exports = {
             if (user) {
                 user.comparePassword(req.body.password, async (err, isMatch) => {
                     if (err) res.status(500).send({ msg: err.message });
-                    if (isMatch) {
+                    if (isMatch) {  
                         let token = await jwt.signToken(user._id, user.role)
                         await jwt.signRefreshToken(user._id, user.role)
                         res.cookie('accessToken', token, {
                             httpOnly: true,
                             // secure: false,
                             secure: true,
-                            samesite: none,
+                            sameSite:'none',
                             // samesite:'Strict',
                             // sameSite: 'lax',
                         })
