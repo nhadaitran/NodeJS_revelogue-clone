@@ -20,7 +20,8 @@ module.exports = {
                             httpOnly: true,
                             // secure: false,
                             secure: true,
-                            samesite:'Strict',
+                            samesite:'none',
+                            // samesite:'Strict',
                             // sameSite: 'lax',
                         })
                         const { password, ...info } = { ...user._doc }
