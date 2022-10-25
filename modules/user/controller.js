@@ -18,10 +18,10 @@ module.exports = {
                         await jwt.signRefreshToken(user._id, user.role)
                         res.cookie('accessToken', token, {
                             httpOnly: true,
-                            // secure: false,
-                            secure: true,
+                            secure: false,
+                            // secure: true,
                             // sameSite: 'strict'
-                            sameSite: 'none'
+                            sameSite: 'lax'
                         })
                         const { password, ...info } = { ...user._doc }
                         res.status(200).send({ auth: info });
