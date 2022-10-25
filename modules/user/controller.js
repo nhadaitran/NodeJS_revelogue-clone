@@ -20,7 +20,7 @@ module.exports = {
                             httpOnly: true,
                             // secure: false,
                             secure: true,
-                            samesite:'none',
+                            samesite:'None',
                             // samesite:'Strict',
                             // sameSite: 'lax',
                         })
