@@ -22,7 +22,7 @@ module.exports = {
                             secure: true,
                             // sameSite: 'strict'
                             sameSite: 'lax',
-                            domain:'https://revelogue.vercel.app'
+                            domain:'revelogue.vercel.app'
                         })
                         const { password, ...info } = { ...user._doc }
                         res.status(200).send({ auth: info });
