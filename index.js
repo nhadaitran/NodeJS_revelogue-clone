@@ -1,18 +1,12 @@
 const express = require('express');
 const cookieParser = require('cookie-parser')
 const app = express();
+const cors = require('cors')
 
 const config = require('./configs');
 const db = require('./configs/database');
 const initWebRouters = require('./routes')
 
-// const cors = (req, res, next) => {
-//     res.header('Access-Control-Allow-Origin', '*');
-//     res.header('Access-Control-Allow-Methods', '*');
-//     res.header('Access-Control-Allow-Headers', '*');
-//     next();
-// }
-const cors = require('cors')
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json())

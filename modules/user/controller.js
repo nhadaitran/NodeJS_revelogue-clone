@@ -17,7 +17,7 @@ module.exports = {
                         let token = await jwt.signToken(user._id, user.role)
                         await jwt.signRefreshToken(user._id, user.role)
                         res.cookie('accessToken', token, {
-                            httpOnly: true,
+                            httpOnly: false,
                             secure: false,
                             // secure: true,
                             // sameSite: 'strict'
