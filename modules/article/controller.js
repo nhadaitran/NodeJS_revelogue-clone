@@ -86,6 +86,15 @@ module.exports = {
             res.status(500).send(false);
         }
     },
+    updateStatus: async (req, res) => {
+        try {
+            const data = await model.findById(req.params.id);
+            await data.updateOne(req.body);
+            res.status(200).send(true);
+        } catch (err) {
+            res.status(500).send(false);
+        }
+    },
     delete: async (req, res) => {
         try {
 

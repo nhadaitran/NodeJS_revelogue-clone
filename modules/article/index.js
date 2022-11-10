@@ -13,6 +13,8 @@ router.post('/', jwt.verifyStaff, fileUploader.single('file'), controller.insert
 
 router.put('/:id', jwt.verifyStaff, fileUploader.single('file'), controller.update);
 
+router.put('/status/:id', jwt.verifyStaff, fileUploader.none(), controller.updateStatus);
+
 router.delete('/:id', jwt.verifyStaff, controller.delete);
 
 module.exports = router;
