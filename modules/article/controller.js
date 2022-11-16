@@ -5,7 +5,15 @@ const modelCategory = require('../category/model');
 module.exports = {
     getAll: async (req, res) => {
         try {
-            const data = await model.find().populate('writer')
+            const data = await model.find().populate('category writer')
+            res.status(200).send(data);
+        } catch (err) {
+            res.status(500).send(null);
+        }
+    },
+    getStatusFalse: async (req, res) => {
+        try {
+            const data = await model.find({ status: false }).populate('category writer')
             res.status(200).send(data);
         } catch (err) {
             res.status(500).send(null);
@@ -13,7 +21,7 @@ module.exports = {
     },
     getByWriter: async (req, res) => {
         try {
-            const data = await model.find({ writer: req.params.id }).populate('writer')
+            const data = await model.find({ writer: req.params.id }).populate('category writer')
             res.status(200).send(data);
         } catch (err) {
             res.status(500).send(null);
@@ -21,7 +29,7 @@ module.exports = {
     },
     getByCategory: async (req, res) => {
         try {
-            const data = await model.find({ category: req.params.id }).populate('category')
+            const data = await model.find({ category: req.params.id }).populate('category writer')
             var slug = data[0].category.slug
             var articles = {}
             articles[slug] = data
@@ -33,7 +41,7 @@ module.exports = {
     getByCategorySlug: async (req, res) => {
         try {
             var cat = await modelCategory.findOne({ slug: req.params.slug })
-            const data = await model.find({ category: cat._id.toString() }).populate('category')
+            const data = await model.find({ category: cat._id.toString() }).populate('category writer')
             var slug = data[0].category.slug
             var articles = {}
             articles[slug] = data
