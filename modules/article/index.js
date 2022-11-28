@@ -4,6 +4,7 @@ const jwt = require('../jwt_service');
 const fileUploader = require('../../configs/cloudinary.config');
 
 router.get('/', controller.getAll);
+router.get('/home', controller.getHome);
 router.get('/status', jwt.verifyAdmin, controller.getStatusFalse);
 router.get('/writer/:id', controller.getByWriter);
 router.get('/category/:id', controller.getByCategory);
