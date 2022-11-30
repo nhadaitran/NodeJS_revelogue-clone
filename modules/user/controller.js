@@ -16,14 +16,14 @@ module.exports = {
                     if (isMatch) {  
                         let token = await jwt.signToken(user._id, user.role)
                         await jwt.signRefreshToken(user._id, user.role)
-                        // res.cookie('accessToken', token, {
-                        //     httpOnly: true,
-                        //     secure: false,
-                        //     // secure: true,
-                        //     // sameSite:'none',
-                        //     // samesite:'Strict',
-                        //     sameSite: 'lax',
-                        // })
+                        res.cookie('accessToken', token, {
+                            httpOnly: true,
+                            secure: false,
+                            // secure: true,
+                            // sameSite:'none',
+                            // samesite:'Strict',
+                            sameSite: 'lax',
+                        })
                         const { password, ...info } = { ...user._doc }
                         res.status(200).send({ auth: info, _token:token });
                     } else {

@@ -8,14 +8,16 @@ module.exports = {
       const data = await model.find().populate("category writer");
       res.status(200).send(data);
     } catch (err) {
-      res.status(500).send(null);
+      res.status(400).send(null);
     }
   },
   getHome: async (req, res) => {
     try {
+      //temp
       var _idLiterature = "634e74401a167b269a662372";
       var _idCinema = "634e746c1a167b269a662374";
       var _idMusic = "634e74841a167b269a662378";
+
       const topview = await model
         .find({ status: true })
         .sort({ view: "desc" })
@@ -61,7 +63,7 @@ module.exports = {
         .populate("category writer");
       res.status(200).send(data);
     } catch (err) {
-      res.status(500).send(null);
+      res.status(400).send(null);
     }
   },
   getByWriter: async (req, res) => {
@@ -71,7 +73,7 @@ module.exports = {
         .populate("category writer");
       res.status(200).send(data);
     } catch (err) {
-      res.status(500).send(null);
+      res.status(400).send(null);
     }
   },
   getByCategory: async (req, res) => {
@@ -84,7 +86,7 @@ module.exports = {
       articles[slug] = data;
       res.status(200).send(articles);
     } catch (err) {
-      res.status(500).send(null);
+      res.status(400).send(null);
     }
   },
   getByCategorySlug: async (req, res) => {
@@ -98,7 +100,7 @@ module.exports = {
       articles[slug] = data;
       res.status(200).send(articles);
     } catch (err) {
-      res.status(500).send(null);
+      res.status(400).send(null);
     }
   },
   getOne: async (req, res) => {
@@ -108,12 +110,12 @@ module.exports = {
         .populate("category writer");
       res.status(200).send(data);
     } catch (err) {
-      res.status(500).send(null);
+      res.status(400).send(null);
     }
   },
   insert: async (req, res, next) => {
     if (!req.file) {
-      res.status(500).send({ error: "No image uploaded!" });
+      res.status(400).send({ error: "No image uploaded!" });
     }
     let newArticle = new model({
       title: req.body.title,
@@ -129,7 +131,7 @@ module.exports = {
       const result = await newArticle.save();
       res.status(200).send({ article: result });
     } catch (err) {
-      res.status(500).send(err);
+      res.status(400).send(err);
     }
   },
   update: async (req, res) => {
@@ -144,7 +146,7 @@ module.exports = {
       await data.updateOne(req.body);
       res.status(200).send(true);
     } catch (err) {
-      res.status(500).send(false);
+      res.status(400).send(false);
     }
   },
   updateStatus: async (req, res) => {
@@ -153,7 +155,7 @@ module.exports = {
       await data.updateOne(req.body);
       res.status(200).send(req.params.id);
     } catch (err) {
-      res.status(500).send(false);
+      res.status(400).send(false);
     }
   },
   delete: async (req, res) => {
@@ -164,7 +166,7 @@ module.exports = {
       await cloudinary.uploader.destroy(filename);
       res.status(200).send(true);
     } catch (err) {
-      res.status(500).send(false);
+      res.status(400).send(false);
     }
   },
 };
