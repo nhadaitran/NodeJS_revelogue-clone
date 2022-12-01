@@ -56,6 +56,19 @@ module.exports = {
       res.status(400).send(null);
     }
   },
+  getWidgetNews: async (req, res) => {
+    try {
+      const newest = await model
+        .find({ status: true })
+        .sort({ updated_at: "desc" })
+        .limit(5);
+      var arr = [];
+      arr.push({ newest: newest });
+      res.status(200).send(arr);
+    } catch (err) {
+      res.status(400).send(null);
+    }
+  },
   getStatusFalse: async (req, res) => {
     try {
       const data = await model
