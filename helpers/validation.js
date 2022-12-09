@@ -4,7 +4,7 @@ module.exports = {
     loginValidate: (data) =>{
         const userSchema = joi.object({
             email: joi.string().email().required(),
-            password: joi.string().min(8).max(32).required()
+            password: joi.string().min(8).required()
         });
         return userSchema.validate(data);
     },
@@ -14,7 +14,7 @@ module.exports = {
             username: joi.string().min(8).max(32).required(),
             email: joi.string().email().required(),
             sex: joi.number().required(),
-            password: joi.string().min(8).max(32).required()
+            password: joi.string().min(8).required()
         });
         return userSchema.validate(data);
     }
